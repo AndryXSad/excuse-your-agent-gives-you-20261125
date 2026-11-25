@@ -24,8 +24,8 @@ LINE = (
 )
 
 
-def main() -> None:
-    text = LINE
+def validate_line(text):
+    """Gate check: 1-200 chars, not only whitespace, ASCII so bytes agree."""
     if not (1 <= len(text) <= 200):
         raise SystemExit(f"entry is {len(text)} characters, must be 1-200")
     if not text.strip():
@@ -37,6 +37,11 @@ def main() -> None:
         # Non-ASCII would make byte size differ from the character gate;
         # keep the file strictly ASCII so size and length always agree.
         raise SystemExit("entry must be ASCII so bytes equal characters")
+    return text
+
+
+def main() -> None:
+    text = validate_line(LINE)
     out_dir = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output"))
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "entry.txt"
